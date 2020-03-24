@@ -20,14 +20,18 @@ export function BasicContainer<T extends ItemType>(props: BasicContainerProps<T>
     const [searchValue, setSearchValue, searchOverList] = useSearch({ handleSearch: props.handleSearch});
     return (
         <>
-            <div className="container col-sm-8 col-sm-offset-2" id="top-bar">
-                {props.handleSearch &&
-                SearchComp({searchValue:searchValue,setSearchValue:setSearchValue})}
-                {props.saveChanges &&
-                SaveButton({list: list, saveChanges: props.saveChanges})}
-            </div>
-            <div className="container col-sm-8 col-sm-offset-2" id="task-list-container">
+            <div className="container col-lg-8 col-lg-offset-2" id="task-list-container">
                 <div className="panel panel-default">
+                    <div className="row" id="top-bar" style={{"margin" : '2%'}}>
+                        <div className="col-lg-6" >
+                        {props.handleSearch &&
+                        SearchComp({searchValue:searchValue,setSearchValue:setSearchValue})}
+                        </div>
+                        <div className="col-lg-6 pull" >
+                            {props.saveChanges &&
+                        SaveButton({list: list, saveChanges: props.saveChanges})}
+                        </div>
+                    </div>
                     {
                         props.listComponent({itemsToShow: searchOverList(list), onItemChange: setItem, onItemDelete:removeItem })
                     }
@@ -39,14 +43,14 @@ export function BasicContainer<T extends ItemType>(props: BasicContainerProps<T>
 
 function SaveButton<T>(props: { list: Array<T>, saveChanges: (arr: Array<T>) => void, }) {
     return (
-        <div className="col-sm-3 " id="save-bar">
+        <div className=" float-right" id="save-bar">
             <button type="button" className="btn btn-primary" onClick={(event) => props.saveChanges(props.list)}>Save</button>
         </div>);
 }
 
 function SearchComp(props: {searchValue:string,setSearchValue: (x:string) => void}) {
     return (
-        <div className="col-sm-3 " id="search-bar">
+        <div className="col-lg-6" id="search-bar">
             <input type="text" placeholder={"search.."}
                    value={props.searchValue}
                    onChange={(event) => {

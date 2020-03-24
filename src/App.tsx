@@ -5,10 +5,12 @@ import {TodoContainer} from "./components/containers/todo-container";
 function App() {
     return (
         <div className="row" id="app">
-            <div className="header container col-sm-8 col-sm-offset-2">
+            <div className="header container col-lg-8 col-lg-offset-2">
                 <h2>ToDo Task List App</h2>
             </div>
-           <TodoContainer/>
+            <div className="row container" id="app-container">
+                <TodoContainer/>
+            </div>
         </div>
     );
 }

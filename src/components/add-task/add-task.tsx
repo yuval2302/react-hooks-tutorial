@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 export function AddTask(props: { onsubmit: (task: string) => void }) {
     const [task, setTask] = useState("");
     return (
-        <div className="container col-sm-8 col-sm-offset-2" id="add-task-container">
+        <div className="container col-lg-8 col-lg-offset-2" id="add-task-container">
             <div className="card">
                 <div className="card-header">
                     Add New Task
