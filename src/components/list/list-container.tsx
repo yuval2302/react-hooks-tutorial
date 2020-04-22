@@ -14,9 +14,7 @@ export function ListContainer<T extends ItemType>(props: ListContainerProps<T>) 
     return (<div>
         <ul className="list-group">
             {props.listProps.itemsToShow.map((value, index) => {
-                return <props.ItemComp key={"Item-comp" + value.id} item={value}
-                                       onItemChange={props.listProps.onItemChange}
-                                       onItemDelete={props.listProps.onItemDelete}
+                return <props.ItemComp key={"Item-comp" + value.id} itemId={value.id}
                                        isDark={(props.colorChange ? props.colorChange(index) : false)}/>
 
             })}

@@ -3,21 +3,20 @@ import {ItemType} from "../../types/itemType";
 import {useCachedItems} from "../../services/cached-items";
 import {ListProps} from "../../types/ListTypes";
 import useSearch from "../../services/search-services";
+import {ListState} from "../../redux/reducers/todo-list-reducer";
+import {StateData} from "../../redux/reducers";
+import {useSelector} from "react-redux";
 
 export type BasicContainerProps<T extends ItemType> = {
     listComponent: React.FunctionComponent<ListProps<T>>,
-    dataProvider: () => Array<T>,
-    addNewItems ?: T,
+    dataProvider: (state:StateData) => Array<T>,
     saveChanges?: (arr: Array<T>) => void,
     handleSearch ?: (item: T, text:string) => boolean
 }
 
 export function BasicContainer<T extends ItemType>(props: BasicContainerProps<T>) {
-    const [list, setItem, removeItem] = useCachedItems({
-        addNewItem: props.addNewItems,
-        dataProvider: props.dataProvider
-    });
-    const [searchValue, setSearchValue, searchOverList] = useSearch({ handleSearch: props.handleSearch});
+    const list = useSelector(props.dataProvider);
+    const [searchValue, setSearchValue, searchOverList] = useSearch({ dataProvider: props.dataProvider, handleSearch: props.handleSearch});
     return (
         <>
             <div className="container col-lg-8 col-lg-offset-2" id="task-list-container">
@@ -33,7 +32,7 @@ export function BasicContainer<T extends ItemType>(props: BasicContainerProps<T>
                         </div>
                     </div>
                     {
-                        props.listComponent({itemsToShow: searchOverList(list), onItemChange: setItem, onItemDelete:removeItem })
+                        props.listComponent({itemsToShow: searchOverList()})
                     }
                 </div>
             </div>
@@ -41,7 +40,7 @@ export function BasicContainer<T extends ItemType>(props: BasicContainerProps<T>
     );
 }
 
-function SaveButton<T>(props: { list: Array<T>, saveChanges: (arr: Array<T>) => void, }) {
+function SaveButton<T>(props: { list : Array<T>, saveChanges: (arr: Array<T>) => void, }) {
     return (
         <div className=" float-right" id="save-bar">
             <button type="button" className="btn btn-primary" onClick={(event) => props.saveChanges(props.list)}>Save</button>

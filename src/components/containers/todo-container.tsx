@@ -4,16 +4,17 @@ import React, {useState} from "react";
 import {BasicContainer} from "./basic-container";
 import {TodoList} from "../list/todo-list";
 import useHttpServer from "../../services/http-service";
+import {useDispatch, useSelector} from "react-redux";
+import {StateData} from "../../redux/reducers";
+import {addTodo} from "../../redux/actions/list-actions"
 
 export function TodoContainer() {
-    const [newItem, setNewItems] = useState();
-    const [initialId, setInitialId] = useState(-1);
-    const getSavedItems = useHttpServer();
+    const nextId = useSelector((state: StateData) => state.todoList.nextId);
+    const dispatch = useDispatch();
 
     function onAddTask(task: string): void {
-        const newTask: TodoItemType = {id: initialId, task: task, isDone: false};
-        setNewItems(newTask);
-        setInitialId(initialId - 1);
+        const newTask: TodoItemType = {id: nextId, task: task, isDone: false};
+        dispatch(addTodo(newTask));
     }
 
     const handleSearch = (item: TodoItemType, text: string): boolean => {
@@ -26,8 +27,8 @@ export function TodoContainer() {
 
     return (
         <>
-            <BasicContainer listComponent={TodoList} dataProvider={getSavedItems} saveChanges={saveChanges}
-                            addNewItems={newItem} handleSearch={handleSearch}/>
+            <BasicContainer listComponent={TodoList} dataProvider={(state: StateData) => state.todoList.list} saveChanges={saveChanges}
+                            handleSearch={handleSearch}/>
             <AddTask onsubmit={onAddTask}/>
         </>
     );

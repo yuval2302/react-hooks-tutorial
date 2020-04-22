@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {StateData} from "../../redux/reducers";
+import {useSelector} from "react-redux";
 
 export function AddTask(props: { onsubmit: (task: string) => void }) {
     const [task, setTask] = useState("");
@@ -11,7 +13,6 @@ export function AddTask(props: { onsubmit: (task: string) => void }) {
                 <div className="card-body">
                     <form className="form-inline">
                         <div className="form-group mx-sm-3 mb-2">
-                            <label htmlFor="inputTask" className="sr-only">Task</label>
                             <input type="text" value={task} className="form-control" id="inputTask" placeholder="Write your task..."
                                    onChange={(e) => setTask(e.target.value)}/>
                         </div>

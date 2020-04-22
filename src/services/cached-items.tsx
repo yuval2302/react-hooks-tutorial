@@ -1,17 +1,16 @@
 import {useCallback, useEffect, useReducer, useState} from "react";
-import {ItemType} from "../types/itemType";
+import {ItemType, TodoItemType} from "../types/itemType";
+import {useSelector} from "react-redux";
+import {StateData} from "../redux/reducers";
+import {ListState} from "../redux/reducers/todo-list-reducer";
 
-export function useCachedItems<T extends ItemType>(props: {addNewItem ?: T, dataProvider:() => Array<T>}) : [Array<T>,(itemToSet: T) => void, (itemToRemove: T) => void] {
-    const [savedList, setSavedList] = useState( new Array<T>());
+export function useCachedItems<T extends ItemType>(props: {addNewItem ?: T, dataProvider : (state: StateData) => T[]}) : [Array<T>,(itemToSet: T) => void, (itemToRemove: T) => void] {
+    const savedTodoList = useSelector(props.dataProvider);
     const [cachedList, setCachedList] = useState(new Array<T>());
 
     useEffect(() => {
-        setSavedList(props.dataProvider());
-    }, []);
-
-    useEffect(() => {
-        setCachedList(cachedList.concat(savedList));
-    },[savedList]);
+        setCachedList(savedTodoList.concat(props.addNewItem ? props.addNewItem : []));
+    },[]);
 
     useEffect(() => {
         setCachedList(cachedList.concat(props.addNewItem ? props.addNewItem : []));
